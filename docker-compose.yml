@@ -1,0 +1,34 @@
+services:
+  #Postgresql database
+  db:
+    #using latest Postgresql image
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - 9999:8080
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest  # official Keycloak image (from Red Hat's registry)
+    ports:
+      - "9090:8080"              # access Keycloak UI at http://localhost:9090
+    environment:
+      KEYCLOAK_ADMIN:  ${KEYCLOAK_ADMIN}      # admin username
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}  # admin password
+    volumes:
+      - keycloak-data:/opt/keycloak/data  # persists Keycloak data
+    command:
+      - start-dev                # runs in development mode
+      - --db=dev-file            # uses a simple file-based DB (no external DB needed)
+
+volumes:
+  keycloak-data:
+    driver: local              # creates a named Docker volume on your machine
