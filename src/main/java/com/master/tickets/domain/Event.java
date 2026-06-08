@@ -33,7 +33,7 @@ public class Event {
     private LocalDateTime end;
 
     @Column(name = "venue",nullable = false)
-    private String Venue;
+    private String venue;
 
     @Column(name = "sales_start")
     private LocalDateTime salesStart;
@@ -49,7 +49,7 @@ public class Event {
     @JoinColumn(name = "organiser_id")
     private User organiser;
 
-    @ManyToMany(mappedBy = "Attending Events")
+    @ManyToMany(mappedBy = "attendingEvents")
     private List<User> attendees = new ArrayList<>();
 
 
@@ -63,6 +63,7 @@ public class Event {
     @LastModifiedDate
     @Column(name = "updated_at",nullable = false)
     private LocalDateTime updatedAt;
+
 
 
 }
