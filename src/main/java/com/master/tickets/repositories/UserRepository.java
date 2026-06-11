@@ -1,6 +1,6 @@
 package com.master.tickets.repositories;
 
-import com.master.tickets.domain.User;
+import com.master.tickets.domain.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

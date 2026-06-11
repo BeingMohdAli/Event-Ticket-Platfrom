@@ -1,4 +1,4 @@
-package com.master.tickets.domain;
+package com.master.tickets.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,12 +28,18 @@ public class TicketType {
     private String name;
     @Column(name = "price",nullable = false)
     private Double price;
+
+
+    @Column(name = "description")
+    private String description;
+
+
     @Column(name = "total_available")
     private int totalAvailable;
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @Column(name = "event_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
     private Event event;
 
     @OneToMany(mappedBy = "ticketType",cascade = CascadeType.ALL)
@@ -52,11 +58,11 @@ public class TicketType {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         TicketType that = (TicketType) o;
-        return totalAvailable == that.totalAvailable && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(price, that.price) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+        return totalAvailable == that.totalAvailable && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(price, that.price) && Objects.equals(description, that.description) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, totalAvailable, createdAt, updatedAt);
+        return Objects.hash(id, name, price, description, totalAvailable, createdAt, updatedAt);
     }
 }

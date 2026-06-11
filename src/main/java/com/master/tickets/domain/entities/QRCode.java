@@ -1,8 +1,7 @@
-package com.master.tickets.domain;
+package com.master.tickets.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.AnyDiscriminatorImplicitValues;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -11,27 +10,25 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "ticket_validation")
+@Table(name = "qr_codes")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class TicketValidation {
-
+public class QRCode {
 
     @Id
-    @Column(name = "id",nullable = false)
+    @Column(name = "id", nullable = false,updatable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)
-    private TicketValidationEnum status;
+    private QrCodeStatusEnum status;
 
-    @Column(name = "validation_method",nullable = false)
-    @Enumerated(EnumType.STRING)
-    private TicketValidationMethod validationMethod;
+    @Column(name = "value",nullable = false)
+    private String value;
 
 
     @ManyToOne
@@ -49,12 +46,12 @@ public class TicketValidation {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        TicketValidation that = (TicketValidation) o;
-        return Objects.equals(id, that.id) && status == that.status && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+        QRCode qrCode = (QRCode) o;
+        return Objects.equals(id, qrCode.id) && status == qrCode.status && Objects.equals(value, qrCode.value) && Objects.equals(createdAt, qrCode.createdAt) && Objects.equals(updatedAt, qrCode.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, status, createdAt, updatedAt);
+        return Objects.hash(id, status, value, createdAt, updatedAt);
     }
 }

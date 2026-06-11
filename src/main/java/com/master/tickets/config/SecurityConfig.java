@@ -1,4 +1,4 @@
-package com.master.tickets;
+package com.master.tickets.config;
 
 import com.master.tickets.filters.UserProvisioningFilter;
 import org.springframework.context.annotation.Bean;

@@ -1,34 +1,52 @@
 services:
-  #Postgresql database
   db:
-    #using latest Postgresql image
     image: postgres:latest
     ports:
       - "5432:5432"
     restart: always
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   adminer:
     image: adminer:latest
     restart: always
     ports:
-      - 9999:8080
+      - "9999:8080"
 
   keycloak:
-    image: quay.io/keycloak/keycloak:latest  # official Keycloak image (from Red Hat's registry)
+    image: quay.io/keycloak/keycloak:latest
     ports:
-      - "9090:8080"              # access Keycloak UI at http://localhost:9090
+      - "9090:8080"
     environment:
-      KEYCLOAK_ADMIN:  ${KEYCLOAK_ADMIN}      # admin username
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}  # admin password
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     volumes:
-      - keycloak-data:/opt/keycloak/data  # persists Keycloak data
+      - keycloak-data:/opt/keycloak/data
     command:
-      - start-dev                # runs in development mode
-      - --db=dev-file            # uses a simple file-based DB (no external DB needed)
+      - start-dev
+      - --db=dev-file
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    env_file:
+      - .env
 
 volumes:
   keycloak-data:
-    driver: local              # creates a named Docker volume on your machine
+    driver: local

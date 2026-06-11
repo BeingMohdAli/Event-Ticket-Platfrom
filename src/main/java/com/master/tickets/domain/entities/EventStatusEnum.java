@@ -1,4 +1,4 @@
-package com.master.tickets.domain;
+package com.master.tickets.domain.entities;
 
 public enum EventStatusEnum {
 
