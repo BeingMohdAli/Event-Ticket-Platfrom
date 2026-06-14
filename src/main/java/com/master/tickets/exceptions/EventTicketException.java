@@ -1,6 +1,6 @@
 package com.master.tickets.exceptions;
 
-public class EventTicketException extends Exception{
+public class EventTicketException extends RuntimeException{
 
     public EventTicketException() {
     }
