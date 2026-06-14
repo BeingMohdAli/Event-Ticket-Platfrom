@@ -2,6 +2,7 @@ package com.master.tickets.services;
 
 import com.master.tickets.domain.CreateEventRequesting;
 import com.master.tickets.domain.entities.Event;
+import com.master.tickets.domain.entities.TicketType;
 import com.master.tickets.domain.entities.User;
 import com.master.tickets.exceptions.UserNotFoundException;
 import com.master.tickets.repositories.UserRepository;
@@ -22,6 +23,13 @@ public class impl implements EventService {
              new UserNotFoundException(
                      String.format("user with ID %s not found", organiserId)
              ));
+
+    event.getTicketTypes().stream().map(
+
+            ticketType->{
+                TicketType ticketTypeToCrete = new TicketType();
+            }
+    )
 
      Event eventToCreate = new Event();
      eventToCreate.setName(event.getName());
