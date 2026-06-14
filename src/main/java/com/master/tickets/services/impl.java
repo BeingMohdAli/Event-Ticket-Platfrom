@@ -5,16 +5,19 @@ import com.master.tickets.domain.entities.Event;
 import com.master.tickets.domain.entities.TicketType;
 import com.master.tickets.domain.entities.User;
 import com.master.tickets.exceptions.UserNotFoundException;
+import com.master.tickets.repositories.EventRepository;
 import com.master.tickets.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class impl implements EventService {
 
     private final UserRepository userRepository;
+    private final EventRepository eventRepository;
 
 
     @Override
@@ -24,14 +27,18 @@ public class impl implements EventService {
                      String.format("user with ID %s not found", organiserId)
              ));
 
-    event.getTicketTypes().stream().map(
+        List<TicketType> ticketTypes = event.getTicketTypes().stream().map(
+                ticketType -> {
+                    TicketType ticketTypeToCreate = new TicketType();
+                    ticketTypeToCreate.setName(ticketType.getName());
+                    ticketTypeToCreate.setPrice(ticketType.getPrice());
+                    ticketTypeToCreate.setDescription(ticketType.getDescription());
+                    ticketTypeToCreate.setTotalAvailable(ticketType.getTotalAvailable());
+                    return ticketTypeToCreate;
+                }).toList();
 
-            ticketType->{
-                TicketType ticketTypeToCrete = new TicketType();
-            }
-    )
 
-     Event eventToCreate = new Event();
+        Event eventToCreate = new Event();
      eventToCreate.setName(event.getName());
      eventToCreate.setStart(event.getStart());
      eventToCreate.setEnd(event.getEnd());
@@ -42,7 +49,7 @@ public class impl implements EventService {
      eventToCreate.setOrganiser(event.getOrganiser());
 
 
-        return null;
+        return eventRepository.save(eventToCreate);
     }
 
 
