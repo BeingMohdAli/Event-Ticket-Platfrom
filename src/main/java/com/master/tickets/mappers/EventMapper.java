@@ -16,6 +16,7 @@ public interface EventMapper {
 
     CreateEventRequesting fromDto(CreateEventRequestDto dto);
 
+
     CreateEventResponseDto toDto(Event event);
 
 }
