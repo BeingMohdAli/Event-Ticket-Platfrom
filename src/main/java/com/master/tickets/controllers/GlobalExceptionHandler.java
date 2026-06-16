@@ -1,6 +1,7 @@
 package com.master.tickets.controllers;
 
 import com.master.tickets.domain.dtos.ErrorDto;
+import com.master.tickets.exceptions.UserNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,15 @@ import java.util.List;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    public ResponseEntity<ErrorDto> handleUserNotFoundException(UserNotFoundException ex){
+        log.error("caught UserNotFoundException", ex);
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("User Not Found");
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(
