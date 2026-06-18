@@ -10,6 +10,7 @@ import com.master.tickets.repositories.UserRepository;
 import com.master.tickets.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,9 +57,10 @@ public class impl implements EventService {
     }
 
     @Override
-    public Page<Event> listEVentsForOrganiser(UUID organiserId) {
-        return null;
+    public Page<Event> listEVentsForOrganiser(UUID organiserId, Pageable pageable) {
+        return eventRepository.findByOrganiserId(organiserId,pageable);
     }
+
 
 
 }
