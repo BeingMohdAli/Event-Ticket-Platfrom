@@ -1,6 +1,5 @@
 package com.master.tickets.filters;
 
-
 import com.master.tickets.domain.entities.User;
 import com.master.tickets.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -32,23 +31,20 @@ public class UserProvisioningFilter extends OncePerRequestFilter {
             IOException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication!=null
+        if (authentication != null
                 && authentication.isAuthenticated()
-                && authentication.getPrincipal() instanceof Jwt jwt){
+                && authentication.getPrincipal() instanceof Jwt jwt) {
 
             UUID keycloakId = UUID.fromString(jwt.getSubject());
-            if(!userRepository.existsById(keycloakId)){
+            if (!userRepository.existsById(keycloakId)) {
                 User user = new User();
                 user.setId(keycloakId);
-                user.setName(
-                        jwt.getClaimAsString("preferred_username"));
-                user.setEmail(
-                        jwt.getClaimAsString("email"));
+                user.setName(jwt.getClaimAsString("preferred_username"));
+                user.setEmail(jwt.getClaimAsString("email"));
                 userRepository.save(user);
-
             }
-
-            filterChain.doFilter(request,response);
         }
+
+        filterChain.doFilter(request, response);   // ✅ now always runs
     }
 }
