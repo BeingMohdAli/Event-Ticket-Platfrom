@@ -1,4 +1,4 @@
-package com.master.tickets.services;
+package com.master.tickets.services.impl;
 
 import com.master.tickets.domain.CreateEventRequesting;
 import com.master.tickets.domain.entities.Event;
@@ -7,7 +7,9 @@ import com.master.tickets.domain.entities.User;
 import com.master.tickets.exceptions.UserNotFoundException;
 import com.master.tickets.repositories.EventRepository;
 import com.master.tickets.repositories.UserRepository;
+import com.master.tickets.services.EventService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,6 +53,11 @@ public class impl implements EventService {
 
 
         return eventRepository.save(eventToCreate);
+    }
+
+    @Override
+    public Page<Event> listEVentsForOrganiser(UUID organiserId) {
+        return null;
     }
 
 
